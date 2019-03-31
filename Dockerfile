@@ -20,10 +20,14 @@ RUN apt-get update && apt-get install -y \
     vim \
     unzip \
     git \
-    curl
+    curl \
+    supervisor
 
 # Clear cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+
+RUN mkdir -p /var/log/supervisor
+COPY supervisord/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 # Install extensions
 
@@ -47,9 +51,13 @@ COPY . /var/www
 # Copy existing application directory permissions
 COPY --chown=www:www . /var/www
 
+RUN chown www /var/log/supervisor
+RUN chown www /var/run/
+
 # Change current user to www
 USER www
 
-# Expose port 9000 and start php-fpm server
-EXPOSE 9000
-CMD ["php-fpm"]
+# Expose port 9000 and start php-fpm server, and websocket
+EXPOSE 9000 6001
+
+CMD ["/usr/bin/supervisord"]
