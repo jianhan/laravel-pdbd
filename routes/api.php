@@ -26,3 +26,10 @@ Route::group([
     Route::post('refresh', 'AuthController@refresh');
     Route::post('me', 'AuthController@me');
 });
+
+$api = app('Dingo\Api\Routing\Router');
+$api->version('v1', ['middleware' => 'auth:api'], function ($api) {
+    $api->get('/user', function (Request $request) {
+        return $request->user();
+    });
+});
