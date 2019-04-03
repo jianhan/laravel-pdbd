@@ -1,69 +1,59 @@
-version: "3"
+version: '2.3'
+
 services:
-  # PHP service
+
   app:
     build:
       context: .
-      dockerfile: Dockerfile
-    container_name: app_pdbd
+      target: app
     volumes:
       - ./:/var/www
-      - ./php/local.ini:/usr/local/etc/php/conf.d/local.ini
-    working_dir: /var/www
     restart: unless-stopped
-    tty: true
     ports:
-      - "6001:6001"
+      - 9000:9000
     environment:
       SERVICE_NAME: app
       SERVICE_TAGS: dev
-    networks:
-      - app-network
 
-  # Nginx
-  webserver:
-   image: nginx:alpine
-   container_name: webserver_pdbd
-   restart: unless-stopped
-   tty: true
-   ports:
-    - "8080:80"
-    - "443:443"
-   volumes:
-    - ./:/var/www
-    - ./nginx/conf.d/:/etc/nginx/conf.d/
-   networks:
-    - app-network 
-
-  # Mysql
-  db:
-    image: mysql:5.7
-    container_name: db_pdbd
+  websocket:
+    build:
+      context: .
+      target: websocket
+    volumes:
+      - ./:/var/www
     restart: unless-stopped
     ports:
-      - "3306:3306"
+      - 6001:6001
+    environment:
+      SERVICE_NAME: app
+      SERVICE_TAGS: dev
+
+  webserver:
+   image: nginx:alpine
+   restart: unless-stopped
+   ports:
+     - 80:80
+     - 443:443
+   volumes:
+     - ./:/var/www
+     - ./nginx/conf.d/:/etc/nginx/conf.d/
+
+  db:
+    image: mysql:5.7
+    restart: unless-stopped
+    ports:
+      - 3306:3306
     environment:
       MYSQL_DATABASE: pdbd
       MYSQL_ROOT_PASSWORD: root
       SERVICE_TAGS: dev
       SERVICE_NAME: mysql
     volumes:
-      - dbdata:/var/lib/mysql
-    volumes:
       - dbdata:/var/lib/mysql/
       - ./mysql/my.cnf:/etc/mysql/my.cnf
-    networks:
-      - app-network
 
   redis:
-    image: "redis:alpine"
+    image: redis:alpine
 
-#Docker Networks
-networks:
-  app-network:
-    driver: bridge
-
-#Volumes
 volumes:
   dbdata:
-    driver: local
