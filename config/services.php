@@ -47,7 +47,7 @@ return [
     'github' => [
         'client_id' => env('GITHUB_CLIENT_ID'),
         'client_secret' => env('GITHUB_CLIENT_SECRET'),
-        'redirect' => 'http://0.0.0.0:8080/login/github/callback',
+        'redirect' => env('GITHUB_CALLBACK_URL'),
     ],
 
 ];
