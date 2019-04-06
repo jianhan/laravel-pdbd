@@ -7,4 +7,9 @@
 Homestead.json
 Homestead.yaml
 *.log
-.git*
+.git
+.idea
+vendor
+storage/framework/cache/**
+storage/framework/sessions/**
+storage/framework/views/**
