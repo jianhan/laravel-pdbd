@@ -1,5 +1,10 @@
-# Shared build stage with common steps for both final images
-FROM php:7.3-fpm AS deps
+FROM php:7.3-fpm
+
+# Copy composer.lock and composer.json
+COPY composer.lock composer.json /var/www/
+
+# Set working directory
+WORKDIR /var/www
 
 # Install dependencies
 RUN apt-get update && apt-get install -y \
@@ -16,44 +21,43 @@ RUN apt-get update && apt-get install -y \
     unzip \
     git \
     curl \
- && rm -rf /var/lib/apt/lists/*
+    supervisor
+
+# Clear cache
+RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+
+RUN mkdir -p /var/log/supervisor
+COPY supervisord/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
+# Install extensions
+
+RUN docker-php-ext-configure zip --with-libzip
+RUN docker-php-ext-install zip
+
+RUN docker-php-ext-install pdo_mysql mbstring exif pcntl
+RUN docker-php-ext-configure gd --with-gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ --with-png-dir=/usr/include/
+RUN docker-php-ext-install gd
 
 # Install composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-# Install php extensions
-RUN docker-php-ext-configure zip --with-libzip \
- && docker-php-ext-install zip \
- && docker-php-ext-install pdo_mysql mbstring exif pcntl \
- && docker-php-ext-configure gd --with-gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ --with-png-dir=/usr/include/ \
- && docker-php-ext-install gd
+# Add user for laravel application
+RUN groupadd -g 1000 www
+RUN useradd -u 1000 -ms /bin/bash -g www www
 
-# PHP config
-COPY ./php/local.ini /usr/local/etc/php/conf.d/local.ini
+# Copy existing application directory contents
+COPY . /var/www
 
-# Set working directory
-WORKDIR /var/www
+# Copy existing application directory permissions
+COPY --chown=www:www . /var/www
 
-# Default to running non root user
-USER 2000:2000
+RUN chown www /var/log/supervisor
+RUN chown www /var/run/
 
-# Copy all of the code, sadly the composer deps require the code to be
-# available so it cannot be cached seperately
-COPY . .
+# Change current user to www
+USER www
 
+# Expose port 9000 and start php-fpm server, and websocket
+EXPOSE 9000 6001
 
-# Images using this target will run an instance of the websocket server
-FROM deps AS websocket
-
-# Expose the websocket server to other containers on the same network
-EXPOSE 6001
-
-# Run artisan with the default entrypoint which is a docker safe php
-CMD ["/var/www/artisan","websockets:serve"]
-
-
-# Images using this target will run an instance of the app server
-FROM deps AS app
-
-# Expose the php-fpm server to other containers on the same network
-EXPOSE 9000
+CMD ["/usr/bin/supervisord"]
