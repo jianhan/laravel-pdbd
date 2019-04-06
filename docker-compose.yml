@@ -20,6 +20,9 @@ services:
       SERVICE_TAGS: dev
     networks:
       - app-network
+    depends_on:
+      - db
+      - redis
 
   # Nginx
   webserver:
@@ -53,6 +56,16 @@ services:
     volumes:
       - dbdata:/var/lib/mysql/
       - ./mysql/my.cnf:/etc/mysql/my.cnf
+    networks:
+      - app-network
+
+  # Redis
+  redis:
+    image: redis:5.0.0-alpine
+    restart: always
+    container_name: redis-pdbd
+    ports:
+      - 6379:6379
     networks:
       - app-network
 
