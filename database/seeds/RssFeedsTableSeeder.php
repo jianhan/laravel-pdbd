@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\RssFeed;
 use Illuminate\Database\Seeder;
 
 class RssFeedsTableSeeder extends Seeder
@@ -42,17 +43,14 @@ class RssFeedsTableSeeder extends Seeder
                 'url' => 'https://www.codingdojo.com/blog/feed',
                 'site_url' => 'https://www.codingdojo.com/blog',
             ],
-            [
-                'name' => 'InfoQ - InfoQ',
-                'url' => 'https://feed.infoq.com/InfoQ',
-                'site_url' => 'https://www.infoq.com',
-            ],
         ];
 
-        \DB::table('users')->insert([
-            'name' => Str::random(10),
-            'email' => Str::random(10) . '@gmail.com',
-            'password' => bcrypt('secret'),
-        ]);
+        foreach ($data as $row) {
+            $rssFeed = new RssFeed();
+            $rssFeed->name = $row['name'];
+            $rssFeed->url = $row['url'];
+            $rssFeed->site_url = $row['site_url'];
+            $rssFeed->logo = Str::slug($row['name']) . '.png';
+        }
     }
 }

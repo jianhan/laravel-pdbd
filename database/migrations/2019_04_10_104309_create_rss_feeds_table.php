@@ -19,6 +19,7 @@ class CreateRssFeedsTable extends Migration
             $table->string('name', 256);
             $table->string('site_url', 256);
             $table->string('logo', 128);
+            $table->unsignedBigInteger('rss_feed_id')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
