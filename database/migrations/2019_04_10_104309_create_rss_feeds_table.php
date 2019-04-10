@@ -18,6 +18,7 @@ class CreateRssFeedsTable extends Migration
             $table->string('url', 256);
             $table->string('name', 256);
             $table->string('site_url', 256);
+            $table->string('logo', 128);
             $table->softDeletes();
             $table->timestamps();
         });

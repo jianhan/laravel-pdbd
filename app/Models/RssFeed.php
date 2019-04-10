@@ -5,6 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * RssFeed represents Rss feed where sources of articles come from.
+ */
 class RssFeed extends Model
 {
     use SoftDeletes;
