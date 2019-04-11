@@ -20,6 +20,7 @@ class CreateRssFeedsTable extends Migration
             $table->string('site_url', 256);
             $table->string('logo', 128);
             $table->boolean('is_active')->default(true);
+            $table->unsignedTinyInteger('fetch_frequency')->default(60);
             $table->unsignedBigInteger('rss_feed_id')->nullable();
             $table->softDeletes();
             $table->timestamps();

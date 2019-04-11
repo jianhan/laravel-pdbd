@@ -15,6 +15,16 @@ class RssFeed extends Model
     use SoftDeletes;
 
     /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'is_active' => 'boolean',
+        'fetch_frequency' => 'integer',
+    ];
+
+    /**
      * The attributes that aren't mass assignable.
      *
      * @var array
