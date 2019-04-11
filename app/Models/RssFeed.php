@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo as BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany as HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -18,4 +20,24 @@ class RssFeed extends Model
      * @var array
      */
     protected $guarded = ['id'];
+
+    /**
+     * parent defines a relationship in many end.
+     *
+     * @return BelongsTo
+     */
+    public function parent(): BelongsTo
+    {
+        return $this->belongsTo(RssFeed::class);
+    }
+
+    /**
+     * children defines a relationship in the one end.
+     *
+     * @return HasMany
+     */
+    public function children(): HasMany
+    {
+        return $this->hasMany(RssFeed::class);
+    }
 }

@@ -43,7 +43,21 @@ class RssFeedsTableSeeder extends Seeder
                 'url' => 'https://www.codingdojo.com/blog/feed',
                 'site_url' => 'https://www.codingdojo.com/blog',
             ],
+            [
+                'name' => 'InfoQ',
+                'url' => 'https://feed.infoq.com/news',
+                'site_url' => 'https://www.infoq.com',
+            ],
+            [
+                'name' => 'DZone',
+                'url' => 'http://feeds.dzone.com/home',
+                'site_url' => 'https://dzone.com',
+            ],
         ];
+
+        // info q
+        // coderwall
+        // d zone
 
         foreach ($data as $row) {
             $rssFeed = new RssFeed();
@@ -51,6 +65,7 @@ class RssFeedsTableSeeder extends Seeder
             $rssFeed->url = $row['url'];
             $rssFeed->site_url = $row['site_url'];
             $rssFeed->logo = Str::slug($row['name']) . '.png';
+            $rssFeed->save();
         }
     }
 }
