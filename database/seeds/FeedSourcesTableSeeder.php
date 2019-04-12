@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\RssFeed;
+use App\Models\FeedSource;
 use Illuminate\Database\Seeder;
 
 class FeedSourcesTableSeeder extends Seeder
@@ -60,7 +60,7 @@ class FeedSourcesTableSeeder extends Seeder
         // d zone
 
         foreach ($data as $row) {
-            $feedSource = new RssFeed();
+            $feedSource = new FeedSource();
             $feedSource->name = $row['name'];
             $feedSource->url = $row['url'];
             $feedSource->site_url = $row['site_url'];
