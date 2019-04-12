@@ -21,16 +21,21 @@ RUN apt-get update && apt-get install -y \
     unzip \
     git \
     curl \
-    supervisor
+    supervisor \
+    cron
 
 # Clear cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
+# supervisord
 RUN mkdir -p /var/log/supervisor
 COPY supervisord/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-# Install extensions
+# cronjob
+COPY crontab/config /etc/crontabs/root
+RUN touch /etc/crontab /etc/cron.*/*
 
+# Install extensions
 RUN docker-php-ext-configure zip --with-libzip
 RUN docker-php-ext-install zip
 
@@ -55,7 +60,7 @@ RUN chown www /var/log/supervisor
 RUN chown www /var/run/
 
 # Change current user to www
-USER www
+# USER www
 
 # Expose port 9000 and start php-fpm server, and websocket
 EXPOSE 9000 6001
