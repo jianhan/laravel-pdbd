@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateRssFeedsTable extends Migration
+class CreateFeedSourcesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,15 @@ class CreateRssFeedsTable extends Migration
      */
     public function up()
     {
-        Schema::create('rss_feeds', function (Blueprint $table) {
+        Schema::create('feed_sources', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('url', 256);
             $table->string('name', 256);
-            $table->string('site_url', 256);
-            $table->string('logo', 128);
+            $table->enum('type', ['rss', 'atom', 'html'])->default('rss');
+            $table->string('site_url', 256)->nullable();
+            $table->string('logo', 128)->nullable();
             $table->boolean('is_active')->default(true);
             $table->unsignedTinyInteger('fetch_frequency')->default(60);
-            $table->unsignedBigInteger('rss_feed_id')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
@@ -34,6 +34,6 @@ class CreateRssFeedsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('rss_feeds');
+        Schema::dropIfExists('feed_sources');
     }
 }

@@ -3,7 +3,7 @@
 use App\Models\RssFeed;
 use Illuminate\Database\Seeder;
 
-class RssFeedsTableSeeder extends Seeder
+class FeedSourcesTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -60,12 +60,12 @@ class RssFeedsTableSeeder extends Seeder
         // d zone
 
         foreach ($data as $row) {
-            $rssFeed = new RssFeed();
-            $rssFeed->name = $row['name'];
-            $rssFeed->url = $row['url'];
-            $rssFeed->site_url = $row['site_url'];
-            $rssFeed->logo = Str::slug($row['name']) . '.png';
-            $rssFeed->save();
+            $feedSource = new RssFeed();
+            $feedSource->name = $row['name'];
+            $feedSource->url = $row['url'];
+            $feedSource->site_url = $row['site_url'];
+            $feedSource->logo = Str::slug($row['name']) . '.png';
+            $feedSource->save();
         }
     }
 }
