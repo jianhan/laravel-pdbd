@@ -3,11 +3,10 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class FeedSource extends Model
+class Feed extends Model
 {
-    use SoftDeletes;
 
     /**
      * The attributes that should be cast to native types.
@@ -25,4 +24,14 @@ class FeedSource extends Model
      * @var array
      */
     protected $guarded = ['id'];
+
+    /**
+     * source defines one to many relationship between source and feed.
+     *
+     * @return BelongsTo
+     */
+    public function source(): BelongsTo
+    {
+        return $this->belongsTo(Source::class);
+    }
 }
