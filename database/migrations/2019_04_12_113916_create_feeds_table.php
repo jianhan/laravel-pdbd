@@ -15,7 +15,7 @@ class CreateFeedsTable extends Migration
     {
         Schema::create('feeds', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('title', 256);
+            $table->string('title', 256)->nullable();
             $table->string('url', 256);
             $table->enum('type', ['rss', 'atom', 'html'])->default('rss');
             $table->boolean('is_active')->default(true);

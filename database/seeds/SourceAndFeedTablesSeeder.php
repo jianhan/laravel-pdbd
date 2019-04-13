@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Feed;
+use App\Models\Source;
 use Illuminate\Database\Seeder;
 
 class SourceAndFeedTablesSeeder extends Seeder
@@ -15,26 +17,44 @@ class SourceAndFeedTablesSeeder extends Seeder
             [
                 'name' => 'The Crazy Programmer',
                 'url' => 'https://www.thecrazyprogrammer.com',
+                'feeds' => [
+                    ['url' => 'feed'],
+                ],
             ],
             [
                 'name' => 'SitePoint',
                 'url' => 'https://www.sitepoint.com',
+                'feeds' => [
+                    ['url' => 'feed'],
+                ],
             ],
             [
                 'name' => 'Reddit Programming',
                 'url' => 'https://www.reddit.com/r/programming',
+                'feeds' => [
+                    ['url' => '.rss'],
+                ],
             ],
             [
                 'name' => 'Code Pen',
                 'url' => 'https://blog.codepen.io',
+                'feeds' => [
+                    ['url' => '.rss'],
+                ],
             ],
             [
                 'name' => 'The Go Programming Language Blog',
                 'url' => 'https://blog.golang.org',
+                'feeds' => [
+                    ['url' => 'feed.atom?format=xml'],
+                ],
             ],
             [
                 'name' => 'Coding Dojo Blog',
                 'url' => 'https://www.codingdojo.com/blog',
+                'feeds' => [
+                    ['url' => 'feed'],
+                ],
             ],
             [
                 'name' => 'InfoQ',
@@ -58,7 +78,22 @@ class SourceAndFeedTablesSeeder extends Seeder
             // ],
         ];
 
-        // info q
+        foreach ($data as $sourceRecord) {
+            $source = new Source();
+            $source->url = $sourceRecord['url'];
+            $source->name = $sourceRecord['name'];
+            $source->logo = Str::slug($sourceRecord['name'], '-');
+            $source->save();
+            if (isset($sourceRecord['feeds'])) {
+                $feeds = [];
+                foreach ($sourceRecord['feeds'] as $feedRecord) {
+                    $feed = new Feed();
+                    $feed->url = trim($source->feed_root_url, '/') . '/' . $feedRecord['url'];
+                    array_push($feeds, $feed);
+                }
+                $source->feeds()->saveMany($feeds);
+            }
+        }
         // coderwall
         // d zone
     }

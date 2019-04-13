@@ -25,6 +25,21 @@ class Source extends Model
     protected $guarded = ['id'];
 
     /**
+     * Mutator for url attribute, if feed_root_url is not set, then set the same
+     * as url when the url is set.
+     *
+     * @param [type] $value
+     * @return void
+     */
+    public function setUrlAttribute($value)
+    {
+        $this->attributes['url'] = $value;
+        if (!isset($this->attributes['feed_root_url']) || $this->attributes['feed_root_url'] == '') {
+            $this->attributes['feed_root_url'] = $value;
+        }
+    }
+
+    /**
      * feeds defines one to many relationship between source and feed.
      *
      * @return HasMany
