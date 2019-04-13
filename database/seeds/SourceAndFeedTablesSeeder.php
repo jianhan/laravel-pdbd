@@ -110,7 +110,5 @@ class SourceAndFeedTablesSeeder extends Seeder
                 $source->feeds()->saveMany($feeds);
             }
         }
-        // coderwall
-        // d zone
     }
 }

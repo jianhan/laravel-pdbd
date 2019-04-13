@@ -21,6 +21,7 @@ class CreateFeedsTable extends Migration
             $table->boolean('is_active')->default(true);
             $table->unsignedTinyInteger('fetch_frequency')->default(60);
             $table->unsignedBigInteger('source_id')->nullable();
+            $table->timestampTz('last_synced_at')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
