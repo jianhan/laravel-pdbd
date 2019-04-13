@@ -72,10 +72,26 @@ class SourceAndFeedTablesSeeder extends Seeder
                     ['url' => 'Deep+Learning'],
                 ],
             ],
-            // [
-            //     'name' => 'DZone',
-            //     'url' => 'https://dzone.com',
-            // ],
+            [
+                'name' => 'DZone',
+                'url' => 'https://dzone.com',
+                'feed_root_url' => 'http://feeds.dzone.com',
+                'feeds' => [
+                    ['url' => 'ai'],
+                    ['url' => 'agile'],
+                    ['url' => 'big-data'],
+                    ['url' => 'cloud'],
+                    ['url' => 'database'],
+                    ['url' => 'devops'],
+                    ['url' => 'integration'],
+                    ['url' => 'iot'],
+                    ['url' => 'microservices'],
+                    ['url' => 'mobile'],
+                    ['url' => 'performance'],
+                    ['url' => 'security'],
+                    ['url' => 'webdev'],
+                ],
+            ],
         ];
 
         foreach ($data as $sourceRecord) {
