@@ -18,6 +18,10 @@ services:
     environment:
       SERVICE_NAME: app
       SERVICE_TAGS: dev
+      CACHE_DRIVER: redis
+      SESSION_DRIVER: redis
+      QUEUE_DRIVER: redis
+      REDIS_HOST: redis
     networks:
       - app-network
     depends_on:
