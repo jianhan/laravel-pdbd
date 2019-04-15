@@ -39,7 +39,7 @@ class SourceAndFeedTablesSeeder extends Seeder
                 'name' => 'Code Pen',
                 'url' => 'https://blog.codepen.io',
                 'feeds' => [
-                    ['url' => '.rss'],
+                    ['url' => 'feed'],
                 ],
             ],
             [
@@ -96,6 +96,9 @@ class SourceAndFeedTablesSeeder extends Seeder
 
         foreach ($data as $sourceRecord) {
             $source = new Source();
+            if (isset($sourceRecord['feed_root_url']) && $sourceRecord['feed_root_url'] != '') {
+                $source->feed_root_url = $sourceRecord['feed_root_url'];
+            }
             $source->url = $sourceRecord['url'];
             $source->name = $sourceRecord['name'];
             $source->logo = Str::slug($sourceRecord['name'], '-');

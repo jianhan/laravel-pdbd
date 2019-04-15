@@ -1,20 +1,19 @@
-version: "3"
+version: "3.4"
 
 services:
   # PHP service
   app:
     build:
       context: .
-      dockerfile: Dockerfile
+      target: app
     container_name: app_pdbd
     volumes:
       - ./:/var/www
       - ./php/local.ini:/usr/local/etc/php/conf.d/local.ini
-    working_dir: /var/www
     restart: unless-stopped
     tty: true
     ports:
-      - 6001:6001
+      - 9000:9000
     environment:
       SERVICE_NAME: app
       SERVICE_TAGS: dev
@@ -28,6 +27,28 @@ services:
       - db
       - redis
 
+  websocket:
+    build:
+      context: .
+      target: websocket
+    container_name: app_websocket
+    volumes:
+      - ./:/var/www
+    restart: unless-stopped
+    tty: true
+    ports:
+      - 6001:6001
+    environment:
+      SERVICE_NAME: app
+      SERVICE_TAGS: dev
+      CACHE_DRIVER: redis
+      SESSION_DRIVER: redis
+      QUEUE_DRIVER: redis
+      REDIS_HOST: redis
+    depends_on:
+      - db
+      - redis
+  
   # Nginx
   webserver:
    image: nginx:alpine
