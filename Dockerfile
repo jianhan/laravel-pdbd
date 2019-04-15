@@ -37,8 +37,9 @@ COPY ./php/local.ini /usr/local/etc/php/conf.d/local.ini
 # Set working directory
 WORKDIR /var/www
 
-# Default to running non root user
-USER 2000:2000
+ADD . /var/www
+
+RUN chown -R www-data:www-data /var/www
 
 # Copy all of the code, sadly the composer deps require the code to be
 # available so it cannot be cached seperately
@@ -56,10 +57,6 @@ CMD ["/var/www/artisan","websockets:serve"]
 
 # Image will be used as queue worker
 FROM deps AS queueworker
-
-# Run artisan with the default entrypoint which is a docker safe php
-CMD ["/var/www/artisan","queue:work"]
-
 
 # Images using this target will run an instance of the app server
 FROM deps AS app

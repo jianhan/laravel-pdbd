@@ -14,13 +14,43 @@ services:
     tty: true
     ports:
       - 9000:9000
-    environment:
-      SERVICE_NAME: app
-      SERVICE_TAGS: dev
-      CACHE_DRIVER: redis
-      SESSION_DRIVER: redis
-      QUEUE_DRIVER: redis
-      REDIS_HOST: redis
+    networks:
+      - app-network
+    depends_on:
+      - db
+      - redis
+
+  queueworker:
+    build:
+      context: .
+      target: queueworker
+    container_name: app_queueworker
+    entrypoint:
+      - /var/www/artisan
+      - queue:work
+    volumes:
+      - ./:/var/www
+    restart: unless-stopped
+    tty: true
+    networks:
+      - app-network
+    depends_on:
+      - db
+      - redis
+
+  scrapeworker:
+    build:
+      context: .
+      target: queueworker
+    container_name: app_scrapeworker
+    entrypoint:
+      - /var/www/artisan
+      - queue:work
+      - --queue=scrape
+    volumes:
+      - ./:/var/www
+    restart: unless-stopped
+    tty: true
     networks:
       - app-network
     depends_on:
@@ -38,13 +68,8 @@ services:
     tty: true
     ports:
       - 6001:6001
-    environment:
-      SERVICE_NAME: app
-      SERVICE_TAGS: dev
-      CACHE_DRIVER: redis
-      SESSION_DRIVER: redis
-      QUEUE_DRIVER: redis
-      REDIS_HOST: redis
+    networks:
+      - app-network
     depends_on:
       - db
       - redis
