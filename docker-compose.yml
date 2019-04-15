@@ -60,7 +60,7 @@ services:
   integrationworker:
     build:
       context: .
-      target: integrationworker
+      target: queueworker
     container_name: app_integrationworker
     entrypoint:
       - /var/www/artisan
@@ -75,7 +75,22 @@ services:
     depends_on:
       - db
       - redis
-  
+
+  supervisord:
+    build:
+      context: .
+      target: supervisord
+    container_name: app_supervisord
+    volumes:
+      - ./:/var/www
+    restart: unless-stopped
+    tty: true
+    networks:
+      - app-network
+    depends_on:
+      - db
+      - redis
+
   websocket:
     build:
       context: .

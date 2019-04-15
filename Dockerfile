@@ -16,10 +16,19 @@ RUN apt-get update && apt-get install -y \
     unzip \
     git \
     curl \
+    supervisor \
     cron
 
 # Clear cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# supervisord
+RUN mkdir -p /var/log/supervisor
+COPY supervisord/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
+# cronjob
+COPY crontab/config /etc/crontabs/root
+RUN touch /etc/crontab /etc/cron.*/*
 
 # Install composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
@@ -57,6 +66,10 @@ CMD ["/var/www/artisan","websockets:serve"]
 
 # Image will be used as queue worker
 FROM deps AS queueworker
+
+# Image will be used as queue worker
+FROM deps AS supervisord
+CMD ["/usr/bin/supervisord"]
 
 # Images using this target will run an instance of the app server
 FROM deps AS app
