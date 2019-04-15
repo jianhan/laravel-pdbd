@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Feed extends Model
 {
@@ -33,5 +34,15 @@ class Feed extends Model
     public function source(): BelongsTo
     {
         return $this->belongsTo(Source::class);
+    }
+
+    /**
+     * articles defines one to many relationship between articles and feed.
+     *
+     * @return HasMany
+     */
+    public function feed(): HasMany
+    {
+        return $this->HasMany(Article::class);
     }
 }
