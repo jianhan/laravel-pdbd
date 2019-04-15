@@ -20,7 +20,7 @@ class CreateArticlesTable extends Migration
             $table->text('description');
             $table->text('content')->nullable();
             $table->timestampTz('pub_date');
-            $table->string('guid', 1024);
+            $table->string('guid', 32);
             $table->string('creator', 256);
             $table->integer('timestamp');
             $table->unsignedBigInteger('feed_id')->nullable();

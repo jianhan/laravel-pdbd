@@ -107,7 +107,7 @@ class SourceAndFeedTablesSeeder extends Seeder
                 $feeds = [];
                 foreach ($sourceRecord['feeds'] as $feedRecord) {
                     $feed = new Feed();
-                    $feed->url = trim($source->feed_root_url, '/') . '/' . $feedRecord['url'];
+                    $feed->link = trim($source->feed_root_url, '/') . '/' . $feedRecord['url'];
                     array_push($feeds, $feed);
                 }
                 $source->feeds()->saveMany($feeds);

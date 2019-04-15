@@ -16,11 +16,13 @@ class CreateFeedsTable extends Migration
         Schema::create('feeds', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('title', 256)->nullable();
-            $table->string('url', 256);
+            $table->string('link', 256);
+            $table->text('description')->nullable();
             $table->enum('type', ['rss', 'atom', 'html'])->default('rss');
             $table->boolean('is_active')->default(true);
             $table->unsignedTinyInteger('fetch_frequency')->default(60);
             $table->unsignedBigInteger('source_id')->nullable();
+            $table->text('xml')->nullable();
             $table->timestampTz('last_synced_at')->nullable();
             $table->softDeletes();
             $table->timestamps();
