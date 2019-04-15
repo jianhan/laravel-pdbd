@@ -13,3 +13,4 @@ yarn-error.log
 Dockerfile
 docker-compose.yml
 .editorconfig
+.php_cs.cache
