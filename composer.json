@@ -29,7 +29,9 @@
         "fzaninotto/faker": "^1.4",
         "mockery/mockery": "^1.0",
         "nunomaduro/collision": "^3.0",
-        "phpunit/phpunit": "^7.5"
+        "nunomaduro/larastan": "^0.3.16",
+        "phpunit/phpunit": "^7.5",
+        "squizlabs/php_codesniffer": "*"
     },
     "config": {
         "optimize-autoloader": true,
@@ -72,6 +74,9 @@
             "./vendor/bin/php-cs-fixer fix app/ --rules=@PSR2",
             "./vendor/bin/php-cs-fixer fix database/ --rules=@PSR2",
             "./vendor/bin/php-cs-fixer fix routes/ --rules=@PSR2"
+        ],
+        "analyse": [
+            "@php artisan code:analyse --level=max"
         ]
     }
 }
