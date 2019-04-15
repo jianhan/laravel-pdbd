@@ -57,6 +57,25 @@ services:
       - db
       - redis
 
+  integrationworker:
+    build:
+      context: .
+      target: integrationworker
+    container_name: app_integrationworker
+    entrypoint:
+      - /var/www/artisan
+      - queue:work
+      - --queue=integrationworker
+    volumes:
+      - ./:/var/www
+    restart: unless-stopped
+    tty: true
+    networks:
+      - app-network
+    depends_on:
+      - db
+      - redis
+  
   websocket:
     build:
       context: .
