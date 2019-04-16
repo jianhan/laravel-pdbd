@@ -24,6 +24,7 @@
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",
+        "bmitch/churn-php": "^1.0",
         "dephpend/dephpend": "dev-master",
         "filp/whoops": "^2.0",
         "friendsofphp/php-cs-fixer": "^2.14",
@@ -114,6 +115,10 @@
         ],
         "phpmertrics": [
             "@php ./vendor/bin/phpmetrics --report-html=qa/phpmertrics-report app"
+        ],
+        "churn": [
+            "./vendor/bin/churn run app",
+            "./vendor/bin/churn run --format json app > qa/churn.json"
         ]
     }
 }
