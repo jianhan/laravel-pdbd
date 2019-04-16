@@ -20,7 +20,8 @@
         "laravel/socialite": "^4.1",
         "laravel/tinker": "^1.0",
         "predis/predis": "^1.1",
-        "tymon/jwt-auth": "dev-develop#f72b8eb as 1.0.0-rc.3.2"
+        "tymon/jwt-auth": "dev-develop#f72b8eb as 1.0.0-rc.3.2",
+        "graphp/graphviz": "~0.2.0"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",
@@ -77,6 +78,9 @@
         ],
         "analyse": [
             "@php artisan code:analyse --level=max"
+        ],
+        "gen-doc": [
+            "@php ./phpDocumentor.phar -d app"
         ]
     }
 }
