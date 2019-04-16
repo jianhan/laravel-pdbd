@@ -18,10 +18,14 @@ RUN apt-get update && apt-get install -y \
     curl \
     supervisor \
     cron \
-    wget
+    wget \
+    sqlite3
 
 # Clear cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# install xdebug
+RUN pecl install xdebug
 
 # supervisord
 RUN mkdir -p /var/log/supervisor
@@ -50,6 +54,9 @@ WORKDIR /var/www
 ADD . /var/www
 
 RUN chown -R www-data:www-data /var/www
+
+# do not know if this is the best practice
+RUN chmod -R 777 /var/www/storage
 
 # Copy all of the code, sadly the composer deps require the code to be
 # available so it cannot be cached seperately
