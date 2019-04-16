@@ -30,7 +30,9 @@
         "mockery/mockery": "^1.0",
         "nunomaduro/collision": "^3.0",
         "nunomaduro/larastan": "^0.3.16",
+        "phploc/phploc": "^5.0",
         "phpunit/phpunit": "^7.5",
+        "sebastian/phpcpd": "^4.1",
         "squizlabs/php_codesniffer": "*"
     },
     "config": {
@@ -90,8 +92,17 @@
         "phpmd": [
             "@php ./qa/phpmd.phar app text cleancode,codesize --reportfile ./qa/phpmd.html"
         ],
-        "unittest": [
+        "phpunit-coverage-html": [
             "./vendor/bin/phpunit --coverage-html ./qa/coverage-html"
+        ],
+        "phpunit": [
+            "./vendor/bin/phpunit"
+        ],
+        "phploc": [
+            "./vendor/bin/phploc app"
+        ],
+        "phpcpd": [
+            "./vendor/bin/phpcpd --fuzzy --log-pmd qa/phpcpd.xml app"
         ]
     }
 }
