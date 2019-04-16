@@ -89,6 +89,9 @@
         ],
         "phpmd": [
             "@php ./qa/phpmd.phar app text cleancode,codesize --reportfile ./qa/phpmd.html"
+        ],
+        "unittest": [
+            "./vendor/bin/phpunit --coverage-html ./qa/coverage-html"
         ]
     }
 }
