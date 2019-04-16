@@ -1,8 +1,9 @@
-.php_cs.cache
-/output
-/doc
-phpmd.html
-/coverage-html
-*.xml
-*.html
-*.csv
+# Ignore everything
+*
+
+# But not these files...
+!.gitignore
+!*.phar
+
+# ...even if they are in subdirectories
+!*/

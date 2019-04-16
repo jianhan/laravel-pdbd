@@ -24,6 +24,7 @@
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",
+        "dephpend/dephpend": "dev-master",
         "filp/whoops": "^2.0",
         "friendsofphp/php-cs-fixer": "^2.14",
         "fzaninotto/faker": "^1.4",
@@ -31,6 +32,7 @@
         "nunomaduro/collision": "^3.0",
         "nunomaduro/larastan": "^0.3.16",
         "phploc/phploc": "^5.0",
+        "phpmetrics/phpmetrics": "^2.4",
         "phpunit/phpunit": "^7.5",
         "sebastian/phpcpd": "^4.1",
         "squizlabs/php_codesniffer": "*"
@@ -93,16 +95,25 @@
             "@php ./qa/phpmd.phar app text cleancode,codesize --reportfile ./qa/phpmd.html"
         ],
         "phpunit-coverage-html": [
-            "./vendor/bin/phpunit --coverage-html ./qa/coverage-html"
+            "@php -c php/php-with-traces.ini vendor/bin/phpunit --coverage-html ./qa/coverage-html"
         ],
         "phpunit": [
-            "./vendor/bin/phpunit"
+            "@php -c php/php-with-traces.ini vendor/bin/phpunit"
         ],
         "phploc": [
-            "./vendor/bin/phploc app"
+            "./vendor/bin/phploc app/",
+            "./vendor/bin/phploc --log-csv qa/phploc.csv app/"
         ],
         "phpcpd": [
-            "./vendor/bin/phpcpd --fuzzy --log-pmd qa/phpcpd.xml app"
+            "./vendor/bin/phpcpd app/",
+            "./vendor/bin/phpcpd --fuzzy --log-pmd qa/phpcpd.xml app/"
+        ],
+        "dephpend": [
+            "@php -c php/php-with-traces.ini ./vendor/bin/dephpend metrics app/",
+            "@php -c php/php-with-traces.ini ./vendor/bin/dephpend dsm app/ > qa/dependencies.html"
+        ],
+        "phpmertrics": [
+            "@php ./vendor/bin/phpmetrics --report-html=qa/phpmertrics-report app"
         ]
     }
 }
