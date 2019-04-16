@@ -79,13 +79,16 @@
             "@php artisan code:analyse --level=max"
         ],
         "gen-doc": [
-            "@php ./phpDocumentor.phar -d app"
+            "@php ./qa/phpDocumentor.phar -d app -t ./qa/doc"
         ],
         "php-cs": [
             "./vendor/bin/phpcs"
         ],
         "phpcbf": [
             "./vendor/bin/phpcbf"
+        ],
+        "phpmd": [
+            "@php ./qa/phpmd.phar app text cleancode,codesize --reportfile ./qa/phpmd.html"
         ]
     }
 }
