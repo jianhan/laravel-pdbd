@@ -1,0 +1,7 @@
+parameters:
+    autoload_files:
+        - vendor/autoload.php
+    autoload_directories:
+        - %currentWorkingDirectory%/database
+    excludes_analyse:
+        - %currentWorkingDirectory%/vendor
