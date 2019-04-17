@@ -3,6 +3,8 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\DB;
 
 class DropTables extends Command
 {
@@ -37,7 +39,7 @@ class DropTables extends Command
      */
     public function handle()
     {
-        if (\App::environment('production')) {
+        if (App::environment() == 'production') {
             $this->comment("THIS IS PRODUCTION ENVIRONMENT, PLEASE BE AWARE!!!!!!!!!!!!!!!!");
         }
 
@@ -47,18 +49,18 @@ class DropTables extends Command
 
         $colname = 'Tables_in_' . env('DB_DATABASE');
 
-        $tables = \DB::select('SHOW TABLES');
+        $tables = DB::select('SHOW TABLES');
 
         foreach ($tables as $table) {
             $droplist[] = $table->$colname;
         }
         $droplist = implode(',', $droplist);
 
-        \DB::beginTransaction();
-        \DB::statement('SET FOREIGN_KEY_CHECKS = 0');
-        \DB::statement("DROP TABLE $droplist");
-        \DB::statement('SET FOREIGN_KEY_CHECKS = 1');
-        \DB::commit();
+        DB::beginTransaction();
+        DB::statement('SET FOREIGN_KEY_CHECKS = 0');
+        DB::statement("DROP TABLE $droplist");
+        DB::statement('SET FOREIGN_KEY_CHECKS = 1');
+        DB::commit();
 
         $this->line(PHP_EOL . "Finished" . PHP_EOL);
     }

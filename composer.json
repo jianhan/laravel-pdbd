@@ -34,9 +34,11 @@
         "nunomaduro/larastan": "^0.3.16",
         "phploc/phploc": "^5.0",
         "phpmetrics/phpmetrics": "^2.4",
+        "phpro/grumphp": "^0.15.0",
         "phpunit/phpunit": "^7.5",
         "sebastian/phpcpd": "^4.1",
-        "squizlabs/php_codesniffer": "*"
+        "squizlabs/php_codesniffer": "*",
+        "wapmorgan/php-code-fixer": "dev-master"
     },
     "config": {
         "optimize-autoloader": true,
@@ -78,7 +80,8 @@
         "cs-fix": [
             "./vendor/bin/php-cs-fixer fix app/ --rules=@PSR2",
             "./vendor/bin/php-cs-fixer fix database/ --rules=@PSR2",
-            "./vendor/bin/php-cs-fixer fix routes/ --rules=@PSR2"
+            "./vendor/bin/php-cs-fixer fix routes/ --rules=@PSR2",
+            "./vendor/bin/php-cs-fixer fix config/ --rules=@PSR2"
         ],
         "analyse": [
             "@php artisan code:analyse --level=max"
