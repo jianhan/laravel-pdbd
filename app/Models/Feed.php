@@ -37,12 +37,12 @@ class Feed extends Model
     }
 
     /**
-     * articles defines one to many relationship between articles and feed.
+     * items defines one to many relationship between items and feed.
      *
      * @return HasMany
      */
-    public function feed(): HasMany
+    public function items(): HasMany
     {
-        return $this->HasMany(Article::class);
+        return $this->HasMany(Item::class);
     }
 }

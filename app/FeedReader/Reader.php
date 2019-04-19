@@ -2,7 +2,7 @@
 
 namespace App\FeedReader;
 
-use Illuminate\Support\Collection;
+use FeedIo\FeedInterface;
 use Illuminate\Support\Facades\Log;
 
 class Reader implements ReaderInterface
@@ -30,10 +30,8 @@ class Reader implements ReaderInterface
         return $this->rawContent;
     }
 
-    public function read(): ?Feed
+    public function read(): ?FeedInterface
     {
-        $feed = new Feed();
-
         try {
             // create a simple FeedIo instance
             $feedIo = \FeedIo\Factory::create()->getFeedIo();
@@ -48,43 +46,43 @@ class Reader implements ReaderInterface
                 $this->rawContent = $document->getDOMDocument()->saveXML();
             }
 
-            // generate feed
-            $resultFeed = $result->getFeed();
-            $feed->link = $resultFeed->getLink();
-            $feed->date = $result->getDate();
-            $feed->title = $resultFeed->getTitle();
-            $feed->description = $resultFeed->getDescription();
-            $feed->lastModified = $resultFeed->getLastModified();
-            $feed->getPublicId = $resultFeed->getPublicId();
-            $feed->rawContent = $this->rawContent;
+            return $result->getFeed();
 
-            // generate feed articles
-            $feed->articles = new Collection();
-            foreach ($resultFeed as $item) {
-                $article = new Article();
-                $article->title = $item->getTitle();
-                $article->link = $item->getLink();
-                $article->author = $item->getAuthor()->getName();
-                $article->description = $item->getDescription();
-                $article->lastModified = $item->getLastModified();
-                $article->publicId = $item->getPublicId();
-                $article->pubDate = $item->getValue('dc:date') ?: null;
+            // // generate feed
+            // $resultFeed = $result->getFeed();
+            // $feed->link = $resultFeed->getLink();
+            // $feed->date = $result->getDate();
+            // $feed->title = $resultFeed->getTitle();
+            // $feed->description = $resultFeed->getDescription();
+            // $feed->lastModified = $resultFeed->getLastModified();
+            // $feed->getPublicId = $resultFeed->getPublicId();
+            // $feed->rawContent = $this->rawContent;
 
-                // get article categories
-                $articleCategories = new Collection();
-                foreach ($item->getCategories() as $category) {
-                    $articleCategories->add($category->getTerm());
-                }
-                $article->categories = $articleCategories;
+            // // generate feed articles
+            // $feed->articles = new Collection();
+            // foreach ($resultFeed as $item) {
+            //     $article = new Article();
+            //     $article->title = $item->getTitle();
+            //     $article->link = $item->getLink();
+            //     $article->author = $item->getAuthor()->getName();
+            //     $article->description = $item->getDescription();
+            //     $article->lastModified = $item->getLastModified();
+            //     $article->publicId = $item->getPublicId();
+            //     $article->pubDate = $item->getValue('dc:date') ?: null;
 
-                // add article to collection
-                $feed->articles->add($article);
-            }
+            //     // get article categories
+            //     $articleCategories = new Collection();
+            //     foreach ($item->getCategories() as $category) {
+            //         $articleCategories->add($category->getTerm());
+            //     }
+            //     $article->categories = $articleCategories;
+
+            //     // add article to collection
+            //     $feed->articles->add($article);
+            // }
         } catch (\Exception $e) {
             Log::error('unable to fetch feed', ['exception' => $e]);
             return null;
         }
-
-        return $feed;
     }
 }

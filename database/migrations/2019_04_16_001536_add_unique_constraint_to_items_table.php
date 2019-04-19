@@ -13,7 +13,7 @@ class AddUniqueConstraintToArticlesTable extends Migration
      */
     public function up()
     {
-        Schema::table('articles', function (Blueprint $table) {
+        Schema::table('items', function (Blueprint $table) {
             $table->unique(['guid', 'feed_id'], 'guid_feed_id_unique');
         });
     }
@@ -25,7 +25,7 @@ class AddUniqueConstraintToArticlesTable extends Migration
      */
     public function down()
     {
-        Schema::table('articles', function (Blueprint $table) {
+        Schema::table('items', function (Blueprint $table) {
             $table->dropUnique('guid_feed_id_unique');
         });
     }

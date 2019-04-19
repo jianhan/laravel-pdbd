@@ -13,7 +13,7 @@ class AddFkToArticlesTable extends Migration
      */
     public function up()
     {
-        Schema::table('articles', function (Blueprint $table) {
+        Schema::table('items', function (Blueprint $table) {
             $table->foreign('feed_id', 'feed_id_fk')
                 ->references('id')->on('feeds')
                 ->onDelete('CASCADE');
@@ -27,7 +27,7 @@ class AddFkToArticlesTable extends Migration
      */
     public function down()
     {
-        Schema::table('articles', function (Blueprint $table) {
+        Schema::table('items', function (Blueprint $table) {
             $table->dropForeign('feed_id_fk');
         });
     }
