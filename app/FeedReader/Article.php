@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Syncers;
+namespace App\FeedReader;
 
 class Article
 {

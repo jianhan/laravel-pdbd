@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Syncers;
+namespace App\FeedReader;
 
-interface FeedReaderInterface
+interface ReaderInterface
 {
     public function read(): ?Feed;
 

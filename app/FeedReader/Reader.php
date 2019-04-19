@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Syncers;
+namespace App\FeedReader;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 
-class FeedReader implements FeedReaderInterface
+class Reader implements ReaderInterface
 {
     private $rawContent;
 
@@ -16,7 +16,7 @@ class FeedReader implements FeedReaderInterface
         $this->url = $url;
     }
 
-    public static function getFeedReader(string $url): FeedReaderInterface
+    public static function getReader(string $url): ReaderInterface
     {
         if (trim($url) === '') {
             throw new \Exception('empty url, unable to get feed instance');
