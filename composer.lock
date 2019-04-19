@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "82bd85fad8b2115baa77aed5a581242d",
+    "content-hash": "20ebe6e2a5c5f2c1d0f2225dc02380db",
     "packages": [
         {
             "name": "beyondcode/laravel-websockets",
@@ -250,6 +250,66 @@
                 "social"
             ],
             "time": "2019-03-19T08:23:16+00:00"
+        },
+        {
+            "name": "debril/feed-io",
+            "version": "v4.3.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/alexdebril/feed-io.git",
+                "reference": "d1f9d2831641614fdc3d9b8dda8743e5e5567b3e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/alexdebril/feed-io/zipball/d1f9d2831641614fdc3d9b8dda8743e5e5567b3e",
+                "reference": "d1f9d2831641614fdc3d9b8dda8743e5e5567b3e",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "~6.2",
+                "php": ">=7.1",
+                "psr/log": "~1.0",
+                "symfony/console": "~3.4|~4.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^2.4",
+                "monolog/monolog": "1.*",
+                "phpunit/phpunit": "~6.2.0"
+            },
+            "suggest": {
+                "monolog/monolog": "Allows to handle logs"
+            },
+            "bin": [
+                "bin/feedio"
+            ],
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "FeedIo\\": "src/FeedIo"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Alexandre Debril",
+                    "email": "alex.debril@gmail.com"
+                }
+            ],
+            "description": "PHP library built to consume and serve JSONFeed / RSS / Atom feeds",
+            "homepage": "https://feed-io.net",
+            "keywords": [
+                "atom",
+                "cli",
+                "client",
+                "feed",
+                "jsonfeed",
+                "news",
+                "rss"
+            ],
+            "time": "2019-04-12T12:00:02+00:00"
         },
         {
             "name": "defuse/php-encryption",
