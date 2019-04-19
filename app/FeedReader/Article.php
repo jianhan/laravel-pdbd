@@ -8,6 +8,8 @@ class Article
 
     public $link;
 
+    public $pubDate;
+
     public $lastModified;
 
     public $publicId;

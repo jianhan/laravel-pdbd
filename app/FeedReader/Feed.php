@@ -14,7 +14,7 @@ class Feed
 
     public $description;
 
-    public $lastBuildDate;
+    public $lastModified;
 
     public $articles;
 

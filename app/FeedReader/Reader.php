@@ -36,7 +36,7 @@ class Reader implements ReaderInterface
 
         try {
             // create a simple FeedIo instance
-            $feedIo = \FeedIo\Factory::create(['builder' => 'monolog'])->getFeedIo();
+            $feedIo = \FeedIo\Factory::create()->getFeedIo();
             // read a feed
             $result = $feedIo->read($this->url);
 
@@ -54,7 +54,7 @@ class Reader implements ReaderInterface
             $feed->date = $result->getDate();
             $feed->title = $resultFeed->getTitle();
             $feed->description = $resultFeed->getDescription();
-            $feed->lastBuildDate = $resultFeed->getLastModified();
+            $feed->lastModified = $resultFeed->getLastModified();
             $feed->getPublicId = $resultFeed->getPublicId();
             $feed->rawContent = $this->rawContent;
 
@@ -64,15 +64,21 @@ class Reader implements ReaderInterface
                 $article = new Article();
                 $article->title = $item->getTitle();
                 $article->link = $item->getLink();
-                $article->author = $item->getAuthor();
+                $article->author = $item->getAuthor()->getName();
                 $article->description = $item->getDescription();
                 $article->lastModified = $item->getLastModified();
                 $article->publicId = $item->getPublicId();
+                $article->pubDate = $item->getValue('dc:date') ?: null;
+
+                // get article categories
                 $articleCategories = new Collection();
                 foreach ($item->getCategories() as $category) {
                     $articleCategories->add($category->getTerm());
                 }
-                $feed->articles->add($item);
+                $article->categories = $articleCategories;
+
+                // add article to collection
+                $feed->articles->add($article);
             }
         } catch (\Exception $e) {
             Log::error('unable to fetch feed', ['exception' => $e]);
