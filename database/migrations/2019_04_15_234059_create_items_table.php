@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateArticlesTable extends Migration
+class CreateItemsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -20,7 +20,7 @@ class CreateArticlesTable extends Migration
             $table->text('description');
             $table->text('content')->nullable();
             $table->timestampTz('pub_date');
-            $table->string('guid', 32);
+            $table->string('hashed_public_id', 32);
             $table->string('creator', 256);
             $table->integer('timestamp');
             $table->unsignedBigInteger('feed_id')->nullable();
