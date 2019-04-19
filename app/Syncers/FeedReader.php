@@ -3,6 +3,7 @@
 namespace App\Syncers;
 
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
 
 class FeedReader implements FeedReaderInterface
 {
@@ -29,13 +30,13 @@ class FeedReader implements FeedReaderInterface
         return $this->rawContent;
     }
 
-    public function read(): Feed
+    public function read(): ?Feed
     {
         $feed = new Feed();
 
         try {
             // create a simple FeedIo instance
-            $feedIo = \FeedIo\Factory::create()->getFeedIo();
+            $feedIo = \FeedIo\Factory::create(['builder' => 'monolog'])->getFeedIo();
             // read a feed
             $result = $feedIo->read($this->url);
 
@@ -74,8 +75,8 @@ class FeedReader implements FeedReaderInterface
                 $feed->articles->add($item);
             }
         } catch (\Exception $e) {
-            // TODO: log $e and deal with it
-            dd($e);
+            Log::error('unable to fetch feed', ['exception' => $e]);
+            return null;
         }
 
         return $feed;
