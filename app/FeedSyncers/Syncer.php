@@ -5,6 +5,7 @@ namespace App\FeedSyncers;
 use App\FeedReader\ReaderInterface;
 use App\Models\Feed as FeedModel;
 use App\Models\Item;
+use Illuminate\Support\Facades\Log;
 
 class Syncer implements SyncerInterface
 {
@@ -22,7 +23,6 @@ class Syncer implements SyncerInterface
     {
         try {
             if ($feed = $this->reader->read()) {
-
                 // update feed
                 $this->feedModel->title = $feed->getTitle();
                 $this->feedModel->last_synced_at = \Carbon\Carbon::now();
@@ -48,7 +48,7 @@ class Syncer implements SyncerInterface
                 }
             }
         } catch (\Exception $e) {
-            \Log::error('unable to sync feed', ['exception' => $e]);
+            Log::error('unable to sync feed', ['exception' => $e]);
         }
     }
 }
