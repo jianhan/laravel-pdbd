@@ -28,6 +28,7 @@ services:
     entrypoint:
       - /var/www/artisan
       - queue:work
+      - --timeout=120
     volumes:
       - ./:/var/www
     restart: unless-stopped
@@ -47,6 +48,7 @@ services:
       - /var/www/artisan
       - queue:work
       - --queue=scrape
+      - --timeout=300
     volumes:
       - ./:/var/www
     restart: unless-stopped
@@ -66,6 +68,7 @@ services:
       - /var/www/artisan
       - queue:work
       - --queue=integrationworker
+      - --timeout=600
     volumes:
       - ./:/var/www
     restart: unless-stopped
