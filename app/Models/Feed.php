@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -25,6 +26,52 @@ class Feed extends Model
      * @var array
      */
     protected $guarded = ['id'];
+
+    /*
+    ..######...######...#######..########..########..######.
+    .##....##.##....##.##.....##.##.....##.##.......##....##
+    .##.......##.......##.....##.##.....##.##.......##......
+    ..######..##.......##.....##.########..######....######.
+    .......##.##.......##.....##.##........##.............##
+    .##....##.##....##.##.....##.##........##.......##....##
+    ..######...######...#######..##........########..######.
+     */
+
+    /**
+     * scopeIsActive define a local scope for only active ones.
+     *
+     * @param  Builder  $query
+     * @return Builder
+     */
+    public function scopeIsActive(Builder $query): Builder
+    {
+        return $query->where('is_active', true);
+    }
+
+    /**
+     * scopeNotFetchedYet return only feeds not fetched yet by frequency.
+     *
+     * @param Builder $query
+     * @return Builder
+     */
+    public function scopeNotFetchedYet(Builder $query): Builder
+    {
+        return $query->whereNull('last_synced_at')
+            ->orWhere('fetch_frequency', '<=', 0)
+            ->orWhere(function (Builder $subQuery) {
+                return $subQuery->whereRaw('TIMESTAMPDIFF(MINUTE,NOW(),last_synced_at) > fetch_frequency');
+            });
+    }
+
+    /*
+    .########..########.##..........###....########.####..#######..##....##..######..##.....##.####.########...######.
+    .##.....##.##.......##.........##.##......##.....##..##.....##.###...##.##....##.##.....##..##..##.....##.##....##
+    .##.....##.##.......##........##...##.....##.....##..##.....##.####..##.##.......##.....##..##..##.....##.##......
+    .########..######...##.......##.....##....##.....##..##.....##.##.##.##..######..#########..##..########...######.
+    .##...##...##.......##.......#########....##.....##..##.....##.##..####.......##.##.....##..##..##..............##
+    .##....##..##.......##.......##.....##....##.....##..##.....##.##...###.##....##.##.....##..##..##........##....##
+    .##.....##.########.########.##.....##....##....####..#######..##....##..######..##.....##.####.##.........######.
+     */
 
     /**
      * source defines one to many relationship between source and feed.

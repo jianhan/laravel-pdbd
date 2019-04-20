@@ -19,7 +19,7 @@ class Syncer implements SyncerInterface
         $this->reader = $reader;
     }
 
-    public function sync()
+    public function sync(): bool
     {
         try {
             if ($feed = $this->reader->read()) {
@@ -49,6 +49,9 @@ class Syncer implements SyncerInterface
             }
         } catch (\Exception $e) {
             Log::error('unable to sync feed', ['exception' => $e]);
+            return false;
         }
+
+        return true;
     }
 }
