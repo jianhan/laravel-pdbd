@@ -1,6 +1,8 @@
 # Shared build stage with common steps for both final images
 FROM php:7.3-fpm AS deps
 
+MAINTAINER Jian Han <jian.han@mail.com>
+
 # Install dependencies
 RUN apt-get update && apt-get install -y \
     build-essential \
@@ -31,9 +33,10 @@ RUN pecl install xdebug
 RUN mkdir -p /var/log/supervisor
 COPY supervisord/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-# cronjob
-COPY crontab/config /etc/crontabs/root
-RUN touch /etc/crontab /etc/cron.*/*
+# setup crontab
+COPY crontab/root /etc/cron.d/root
+RUN chmod 0644 /etc/cron.d/root
+RUN crontab /etc/cron.d/root
 
 # Install composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
