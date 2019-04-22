@@ -3,8 +3,10 @@
 namespace App\Console;
 
 use App\Jobs\SyncFeeds;
+use App\Models\Feed;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Illuminate\Support\Facades\App;
 
 class Kernel extends ConsoleKernel
 {
@@ -26,13 +28,12 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // do not run if testing env
-        if (\App::environment() !== 'testing') {
-            $feeds = \App\Models\Feed::isActive()->notFetchedYet()->get();
+        if (App::environment() !== 'testing') {
+            $feeds = Feed::isActive()->notFetchedYet()->get();
             foreach ($feeds as $feed) {
                 $schedule->job(new SyncFeeds($feed), 'scrape')->everyMinute();
             }
         }
-
     }
 
     /**
