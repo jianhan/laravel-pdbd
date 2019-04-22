@@ -25,7 +25,7 @@ class Syncer implements SyncerInterface
             if ($feed = $this->reader->read()) {
                 // update feed
                 $this->feedModel->title = $feed->getTitle();
-                $this->feedModel->last_synced_at = \Carbon\Carbon::now('UTC')->format('Y-m-d H:i:s');
+                $this->feedModel->last_synced_at = \Carbon\Carbon::now()->format('Y-m-d H:i:s');
                 $this->feedModel->description = $feed->getDescription();
                 $this->feedModel->last_modified_at = $feed->getLastModified();
                 $this->feedModel->save();

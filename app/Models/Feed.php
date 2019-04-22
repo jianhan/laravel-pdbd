@@ -40,7 +40,7 @@ class Feed extends Model
     /**
      * scopeIsActive define a local scope for only active ones.
      *
-     * @param  Builder  $query
+     * @param  Builder $query
      * @return Builder
      */
     public function scopeIsActive(Builder $query): Builder
